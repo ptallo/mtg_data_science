@@ -31,7 +31,7 @@ class ScryfallDataService:
             'gameplay_columns': [
                 'id', 'oracle_id',  'name',  'cmc', 'mana_cost', 'color_identity', 'colors', 'type_line', 'oracle_text', 'power', 
                 'toughness', 'keywords', 'game_changer', 'defense', 'hand_modifier', 'life_modifier', 'loyalty', 'produced_mana', 
-                'reserved', 'commander_legality', 'price_usd', 'penny_rank', 'edhrec_rank'
+                'reserved', 'is_commander_legal', 'price_usd', 'penny_rank', 'edhrec_rank'
             ],
         }
 
@@ -44,9 +44,10 @@ class ScryfallDataService:
         if 'image_uris' in df.columns:
             df['image_uri'] = df['image_uris'].apply(lambda x: x.get('normal') if isinstance(x, dict) else None)
         if 'prices' in df.columns:
-            df['price_usd'] = df['prices'].apply(lambda x: x.get('usd') if isinstance(x, dict) else None)
+            df['price_usd'] = df['prices'].apply(lambda x: x.get('usd') if isinstance(x, dict) else None).astype(float)
         if 'legalities' in df.columns:
-            df['commander_legality'] = df['legalities'].apply(lambda x: x.get('commander') if isinstance(x, dict) else None)
+            df['is_commander_legal'] = df['legalities'].apply(lambda x: x.get('commander') if isinstance(x, dict) else None)
+            df['is_commander_legal'] = df['is_commander_legal'].apply(lambda x: x == 'legal')
         return df
 
     def _get_bulk_data_download_link(self, bd: BulkDataType) -> str:
