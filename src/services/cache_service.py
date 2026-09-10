@@ -1,7 +1,7 @@
 import os
 from enum import Enum
 
-from services import file_service
+from src.services import file_service
 
 class CacheType(Enum):
     JSON = "json"

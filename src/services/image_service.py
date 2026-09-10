@@ -2,7 +2,7 @@ import tkinter as tk
 from matplotlib import pyplot as plt
 from PIL import Image
 
-def save_images_as_grid(images: list[Image.Image], columns: int, output_path: str) -> None:
+def save_images_as_grid(images: list[Image.Image], output_path: str, columns: int = 3) -> None:
     image_dimensions = (488, 680)
     dpi = tk.Tk().winfo_fpixels('1i')  # Get the screen DPI
     rows = (len(images) + columns - 1) // columns

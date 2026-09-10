@@ -2,8 +2,8 @@ import json, re, io
 import pandas as pd
 from enum import Enum
 from PIL import Image
-from services.cache_service import CacheService
-from services.scryfall_http_service import ScryfallHttpService
+from src.services.cache_service import CacheService
+from src.services.scryfall_http_service import ScryfallHttpService
 
 def _card_name_to_cache_key(name: str) -> str:
     return re.sub(r"([,\s\"\-']+)", "_", name).lower()
@@ -63,12 +63,11 @@ class ScryfallDataService:
         cache_contents = self.json_cache_service.get(self.endpoints['bulk-data'])
         return pd.DataFrame(json.loads(cache_contents).get("data"))
 
-    def get_cards_from_bulk_data(self, col_set_name: str, bd: BulkDataType = BulkDataType.ORACLE_CARDS) -> pd.DataFrame:
+    def get_cards_from_bulk_data(self, bd: BulkDataType = BulkDataType.ORACLE_CARDS) -> pd.DataFrame:
         if self.json_cache_service.get(bd.value) is None:
             response = self.http_client.get(self._get_bulk_data_download_link(bd), stream=True)
             self.json_cache_service.set(bd.value, response.content)
-        tdf = self._wrap_cache_contents(self.json_cache_service.get(bd.value))
-        return tdf if not self.column_sets.get(col_set_name) else tdf[self.column_sets.get(col_set_name)]
+        return self._wrap_cache_contents(self.json_cache_service.get(bd.value))
 
     def get_card_images(self, oracle_ids: list[str], bd: BulkDataType = BulkDataType.ORACLE_CARDS) -> dict[str, Image.Image | None]:
         scryfall_df = self.get_cards_from_bulk_data(bd)
