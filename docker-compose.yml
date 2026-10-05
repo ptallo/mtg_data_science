@@ -1,0 +1,10 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: src/Dockerfile
+      target: development
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src/:/src
