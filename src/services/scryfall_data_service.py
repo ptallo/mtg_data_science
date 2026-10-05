@@ -2,8 +2,8 @@ import json, re, io
 import pandas as pd
 from enum import Enum
 from PIL import Image
-from src.services.cache_service import CacheService
-from src.services.scryfall_http_service import ScryfallHttpService
+from services.cache_service import CacheService
+from services.scryfall_http_service import ScryfallHttpService
 
 def _card_name_to_cache_key(name: str) -> str:
     return re.sub(r"([,\s\"\-']+)", "_", name).lower()

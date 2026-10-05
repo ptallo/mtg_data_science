@@ -1,7 +1,7 @@
 from typing import Self
-from src.services.cache_service import CacheService, CacheType
-from src.services.scryfall_http_service import ScryfallHttpService
-from src.services.scryfall_data_service import ScryfallDataService
+from services.cache_service import CacheService, CacheType
+from services.scryfall_http_service import ScryfallHttpService
+from services.scryfall_data_service import ScryfallDataService
 
 class Container:
     def __init__(self, scryfall_base_url: str):
